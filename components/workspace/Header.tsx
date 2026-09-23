@@ -1,8 +1,11 @@
 "use client";
 
-import { FiFileText, FiFolder, FiMenu, FiSearch } from "react-icons/fi";
+import { useState } from "react";
+import { FiFilePlus, FiFolderPlus, FiMenu, FiSearch } from "react-icons/fi";
+import CreateDialog from "./dialogs/CreateDialog";
 
 export default function Header() {
+  const [createType, setCreateType] = useState<"folder" | "file" | null>(null);
   return (
     <header className="topbar">
       <button
@@ -14,16 +17,31 @@ export default function Header() {
       </button>
       <h1 className="app-title">Mini Workspace Explorer</h1>
       <div className="topbar-actions">
-        <button type="button" className="btn">
-          <FiFolder /> Folder
+        <button
+          type="button"
+          className="btn"
+          onClick={() => setCreateType("folder")}
+        >
+          <FiFolderPlus /> Folder
         </button>
-        <button type="button" className="btn">
-          <FiFileText /> File
+        <button
+          type="button"
+          className="btn"
+          onClick={() => setCreateType("file")}
+        >
+          <FiFilePlus /> File
         </button>
         <button type="button" className="btn">
           <FiSearch /> Search
         </button>
       </div>
+      {createType && (
+        <CreateDialog
+          itemType={createType}
+          parentId="root"
+          onClose={() => setCreateType(null)}
+        />
+      )}
     </header>
   );
 }
