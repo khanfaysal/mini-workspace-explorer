@@ -2,31 +2,32 @@
 
 import { useWorkspace } from "@/context/WorkspaceContext";
 import { validateName } from "@/lib/workspace";
+import { WorkspaceItem } from "@/types/workspace";
 import React, { useState } from "react";
 
-interface CreateDialogProps {
-  itemType: "folder" | "file";
-  parentId: string;
-  onClose: () => void;
-}
-
-export default function CreateDialog({
-  itemType,
-  parentId,
+export default function RenameDialog({
+  item,
   onClose,
-}: CreateDialogProps) {
+}: {
+  item: WorkspaceItem;
+  onClose: () => void;
+}) {
   const { state, dispatch } = useWorkspace();
-  const [name, setName] = useState("");
+  const [name, setName] = useState(item.name);
   const [error, setError] = useState<string | null>(null);
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    const validationError = validateName(state, parentId, name);
+    if (item.parentId === null) {
+      onClose();
+      return;
+    }
+    const validationError = validateName(state, item.parentId, name, item.id);
     if (validationError) {
       setError(validationError);
       return;
     }
-    dispatch({ type: "CREATE_ITEM", payload: { parentId, name, itemType } });
+    dispatch({ type: "RENAME_ITEM", payload: { id: item.id, name } });
     onClose();
   }
 
@@ -38,21 +39,17 @@ export default function CreateDialog({
         role="dialog"
         aria-modal="true"
       >
-        <h2>New {itemType === "folder" ? "Folder" : "Text File"}</h2>
+        <h2>Rename {item.type === "folder" ? "Folder" : "File"}</h2>
         <form onSubmit={handleSubmit}>
           <input
             autoFocus
             className="modal-input"
-            placeholder={
-              itemType === "folder"
-                ? "Folder name"
-                : "File name (e.g. notes.txt)"
-            }
             value={name}
             onChange={(e) => {
               setName(e.target.value);
               if (error) setError(null);
             }}
+            onFocus={(e) => e.target.select()}
           />
           {error && <p className="form-error">{error}</p>}
           <div className="modal-actions">
@@ -60,7 +57,7 @@ export default function CreateDialog({
               Cancel
             </button>
             <button type="submit" className="btn btn-primary">
-              Create
+              Rename
             </button>
           </div>
         </form>
