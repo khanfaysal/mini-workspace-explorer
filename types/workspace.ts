@@ -17,9 +17,9 @@ export interface FileItem extends BaseItem {
   content: string;
 }
 
-type WorkspaceItem = FolderItem | FileItem;
+export type WorkspaceItem = FolderItem | FileItem;
 
-interface WorkspaceState {
+export interface WorkspaceState {
   items: Record<string, WorkspaceItem>;
   rootId: string;
   selectedFolderId: string;

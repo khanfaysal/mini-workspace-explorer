@@ -107,7 +107,7 @@ export function workspaceReducer(
           : state.openFileId;
 
       const expandedFolderIds = state.expandedFolderIds.filter(
-        (fid) => !idsToDelete.has(fid),
+        (fid: string) => !idsToDelete.has(fid),
       );
 
       return {
@@ -139,7 +139,7 @@ export function workspaceReducer(
       return {
         ...state,
         expandedFolderIds: isExpanded
-          ? state.expandedFolderIds.filter((fid) => fid !== id)
+          ? state.expandedFolderIds.filter((fid: string) => fid !== id)
           : [...state.expandedFolderIds, id],
       };
     }
