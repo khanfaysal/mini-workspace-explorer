@@ -538,3 +538,64 @@ textarea {
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+
+/* ---------- Responsive (mobile) ---------- */
+
+@media (max-width: 768px) {
+  .mobile-only {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .app-title {
+    font-size: 14px;
+  }
+
+  .topbar-actions .btn {
+    padding: 6px 8px;
+    font-size: 12px;
+  }
+
+  .sidebar {
+    position: fixed;
+    top: var(--topbar-height);
+    bottom: 0;
+    left: 0;
+    z-index: 40;
+    transform: translateX(-100%);
+    transition: transform 0.2s ease;
+    box-shadow: 4px 0 16px rgba(0, 0, 0, 0.1);
+  }
+
+  .sidebar-open {
+    transform: translateX(0);
+  }
+
+  .sidebar-backdrop {
+    display: block;
+    position: fixed;
+    inset: var(--topbar-height) 0 0 0;
+    background: rgba(15, 18, 25, 0.35);
+    z-index: 30;
+  }
+
+  .contents-grid {
+    grid-template-columns: 1fr;
+    padding: 12px;
+  }
+
+  .breadcrumbs {
+    padding: 12px 12px 4px;
+  }
+
+  .file-editor,
+  .search-panel {
+    padding: 12px;
+  }
+
+  .file-editor-actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
